@@ -33,4 +33,5 @@ public class PageController {
     public String aboutUsPage(Model model) {
         return "aboutUs";
     }
+
 }

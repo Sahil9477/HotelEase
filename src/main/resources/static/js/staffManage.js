@@ -12,12 +12,12 @@ function loadStaffList() {
             data.forEach(employee => {
                 staffList.innerHTML += `
                     <tr>
-                        <td>${employee.employeeID}</td>
-                        <td>${employee.employeeName}</td>
-                        <td>${employee.employeePosition}</td>
-                        <td>${employee.employeeDepartment}</td>
-                        <td>
-                            <button onclick="editEmployee(${employee.employeeID})" class="bg-blue-500 text-white rounded px-2 py-1">Edit</button>
+                        <td class="px-4 text-center">${employee.employeeID}</td>
+                        <td class="px-4 text-center">${employee.employeeName}</td>
+                        <td class="px-4 text-center">${employee.employeePosition}</td>
+                        <td class="px-4 text-center">${employee.employeeDepartment}</td>
+                        <td class="px-4 text-center">
+                            <button onclick="editEmployee(${employee.employeeID})" class="bg-green-500 text-white rounded px-2 py-1">Edit</button>
                             <button onclick="deleteEmployee(${employee.employeeID})" class="bg-red-500 text-white rounded px-2 py-1">Delete</button>
                         </td>
                     </tr>
@@ -59,7 +59,7 @@ function addEmployee() {
 
 console.log("staffManage.js loaded successfully");
 
-// 删除员工
+// delete staff
 function deleteEmployee(id) {
     if (confirm('Are you sure to delete this employee?')) {
         fetch(`http://localhost:8080/employees/${id}`, {
@@ -113,5 +113,9 @@ function updateEmployee() {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadStaffList();
+});
 
 console.log("staffManage.js loaded successfully");
