@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{baseFragment::parent(~{::#content} , ~{::title} , ~{::script})}">
+<head>
+    <!--this html content will be replaced wholly by the content of parent fragment-->
+<title>Staff Manage</title>
+</head>
+<body>
+    <div id="content" class="border ">
+        <!-- Banner Section -->
+        <section class="bg-green-600 text-white py-20">
+            <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Staff Management</h2>
+            </div>
+            
+            <!-- search & filter -->
+            <div class="mb-4 flex flex-wrap gap-4 items-center flex justify-center items-center space-x-4">
+                <!-- keyword search -->
+                <input 
+                    type="text" 
+                    id="searchKeyword" 
+                    placeholder="Search by Name..." 
+                    class="border rounded p-2"
+                    style="color: black;"
+                    oninput="filterStaffList()"
+                />
+
+                <!-- position filter -->
+                <select 
+                    id="filterPosition" 
+                    class="border rounded p-2 text-gray-400"
+                    onchange="this.style.color = '#000000'; setTimeout(filterStaffList, 5);" 
+                >
+                    <option value="" selected disabled hidden>All Positions</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Developer">Developer</option>
+                    <option value="Waiter">Waiter</option>
+                </select>
+
+                <!-- department filter -->
+                <select 
+                    id="filterDepartment" 
+                    class="border rounded p-2 text-gray-400"
+                    onchange="this.style.color = '#000000'; setTimeout(filterStaffList, 5);" 
+                >                    <option value="" selected disabled hidden>All Departments</option>
+                    <option value="IT">Market</option>
+                    <option value="HR">HR</option>
+                </select>
+                <button type="button"  class="bg-green-500 text-white rounded px-4 py-2">Search</button>
+            </div>
+
+            <!-- add staff Form -->
+            <form id="staffForm" class="mb-8 flex justify-center items-center space-x-4">
+                <label class="text-xl font-bold">Add staff here: </label>
+                <input type="hidden" id="EmployeeID">
+                <input type="text" id="EmployeeName" placeholder="Name" class="border rounded p-2" style="color: black;">
+                <select id="EmployeePosition" class="border rounded p-2 text-gray-400" onchange="this.style.color = '#000000';">
+                    <option value="" selected disabled hidden>Select Position</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Developer">HR</option>
+                    <option value="Waiter">Waiter</option>
+                </select>
+                <select id="EmployeeDepartment" class="border rounded p-2 text-gray-400" onchange="this.style.color = '#000000';">
+                    <option value="" selected disabled hidden>Select Department</option>
+                    <option value="Manager">Market</option>
+                    <option value="Developer">Developer</option>
+                </select>
+                <button type="button" onclick="addEmployee()" class="bg-green-500 text-white rounded px-4 py-2">Save</button>
+            </form>
+
+            <!-- staff list -->
+            <table class="w-full bg-white border">
+                <thead>
+                    <tr class="bg-green-800">
+                        <th class="py-2 px-4">ID</th>
+                        <th class="py-2 px-4">Name</th>
+                        <th class="py-2 px-4">Position</th>
+                        <th class="py-2 px-4">Department</th>
+                    </tr>
+                </thead>
+                <tbody id="staffList">
+                    <!-- dynamic generation -->
+                </tbody>
+            </table>
+    </div>
+    <script data-th-src="@{'/js/staffManage.js'}"></script>
+    <script>
+      console.log("this is profile page");
+    </script>
+    
+</body>
+</html>

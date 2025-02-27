@@ -1,0 +1,42 @@
+<!-- 
+<div th:fragment ="parent_fragment(section)">
+<!-this div is a fragment itself-->
+<!--one base file can have multiple fragments and 'parent_fragment' is one of them-->
+<!-- <h1>This is parent fragment</h1>
+<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate facilis veniam similique, adipisci corporis vero est eveniet ratione iure. Laboriosam voluptates ipsum molestias natus cupiditate accusantium voluptatem officiis explicabo voluptatibus.</p>
+<div th:insert =  "${section}"></div> -->
+<!--this base fragment file's fragments could be considered as function definitions taking input x & y which it got from the calling function (calling fxn is nothing but the file that inserts or replaces that fragment) -->
+<!--values of x and y are generated dynamically-->
+<!-- 
+</div>
+<div th:fragment ="test(exclusive_section)">
+    <h1>this is testing fragment</h1>
+    <div th:insert = "${exclusive_section}"></div>
+</div> 
+--> 
+
+<!--this file shall contain all the commonly occuring stuff accross different pages of wander buddies-->
+<!DOCTYPE html>
+<!--making th whole html document as a fragment itself-->
+<html 
+th:fragment ="parent(content,title ,script)" 
+lang="en" 
+xmlns:th="http://www.thymeleaf.org">
+<!--th:fragment ="parent(content,title='Wander Buddies' ,script)"  states that if no title is passed to the parent frag as args then default value will be assigned to display-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace = "${title}">Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" data-th-href="@{'/css/output.css'}"/>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</head>
+<body>
+    <!--common header for all pages-->
+    <div th:replace="~{navbar :: navbar}"></div>
+    <!--main content of the page that will be replaced by the content of that page which calls the parent fragment ie provides arguments to the baseFragment html page-->
+    <section th:replace = "${content}"> <!--bringing the entire about.html content here in base -->
+    <!--common footer for all the pages -->
+    </section>
+</body>
+</html>
