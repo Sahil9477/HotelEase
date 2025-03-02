@@ -21,7 +21,6 @@
                                 <th class="border px-4 py-2">Room Number</th>
                                 <th class="border border-gray-300 px-4 py-2">Room Type</th>
                                 <th class="border border-gray-300 px-4 py-2">Unit Price</th>
-                                <th class="border border-gray-300 px-4 py-2">Quantity</th>
                                 <th class="border border-gray-300 px-4 py-2">Operation</th>
                             </tr>
                         </thead>
@@ -65,6 +64,7 @@
                                     onchange="this.style.color = '#000000';"
                             >
                                 <option value="" selected disabled hidden>Select Room Type</option>
+                                <option value="all">All Room Types</option>
                                 <option value="Deluxe">Deluxe</option>
                                 <option value="Standard">Standard</option>
                                 <option value="Suite">Suite</option>
@@ -104,6 +104,7 @@
                     </table>
                 </div>
             </section>
+            <script src="/js/roomInquiry.js"></script>
     </div>
 </body>
 </html>
