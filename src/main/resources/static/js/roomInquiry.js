@@ -46,6 +46,7 @@ function renderRooms(rooms) {
         <td class="border px-4 py-2 text-center">${room.roomNumber}</td>
         <td class="border px-4 py-2 text-center">${room.roomType}</td>
         <td class="border px-4 py-2 text-center">${room.roomPrice}</td>
+        <td class="border px-4 py-2 text-center">${room.roomPrice}</td>
         <td class="border px-4 py-2 text-center">
           <button
             class="bg-green-500 text-white px-2 py-1 rounded"
@@ -60,18 +61,31 @@ function renderRooms(rooms) {
 
 //Front-end search (Filter by room type only)
 function filterRooms() {
-    //Gets the value of the drop-down box
-    const roomTypeSelect = document.getElementById('roomType');
-    if (!roomTypeSelect) return;
+  console.log("Filtering rooms..."); //Debug Info
   
-    const selectedType = roomTypeSelect.value; // "all"、"Deluxe"、"Standard"、"Suite", etc
-    let filtered = allRooms;
-    if (selectedType && selectedType !== 'all') {
-      filtered = filtered.filter(r => r.roomType === selectedType);
-    }
-    //Render filtered results (automatically filter selected rooms)
-    renderRooms(filtered);
+  const roomTypeSelect = document.getElementById('roomType');
+  if (!roomTypeSelect) {
+      console.error("Dropdown not found!");
+      return;
+  }
+
+  const selectedType = roomTypeSelect.value.trim(); //Gets the selected room type
+
+  console.log("Selected Room Type:", selectedType); //Debug Info
+
+  let filteredRooms = allRooms.filter(room => {
+      //Make sure 'roomType' is consistent first (avoid case issues)
+      const matchesType = selectedType === 'all' || room.roomType.trim().toLowerCase() === selectedType.toLowerCase();
+      
+      //Make sure that the selected rooms do not appear in the search results
+      return matchesType && !room.isSelected;
+  });
+
+  console.log("Filtered Rooms:", filteredRooms); //Debug information and check filtering results
+
+  renderRooms(filteredRooms);
 }
+
   
 /**
  * Add Rooms to "Selected Rooms"

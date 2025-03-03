@@ -29,11 +29,11 @@
                     id="filterPosition" 
                     class="border rounded p-2 text-gray-400"
                     style="color: black;"
-                    onchange="this.style.color = '#000000'; setTimeout(filterStaffList, 5);" 
+                    onchange="this.style.color = '#000000'; setTimeout(filterStaffList(), 5);" 
                 >
                     <option value="" selected>All Positions</option>
                     <option value="Manager">Manager</option>
-                    <option value="Developer">Developer</option>
+                    <option value="HR">HR</option>
                     <option value="Waiter">Waiter</option>
                 </select>
 
@@ -42,11 +42,11 @@
                     id="filterDepartment" 
                     class="border rounded p-2"
                     style="color: black;"
-                    onchange="this.style.color = '#000000'; setTimeout(filterStaffList, 5);" 
+                    onchange="this.style.color = '#000000'; setTimeout(filterStaffList(), 5);" 
                 >
                     <option value="" selected>All Departments</option>
-                    <option value="IT">Market</option>
-                    <option value="HR">HR</option>
+                    <option value="Manager">Market</option>
+                    <option value="Developer">Developer</option>
                 </select>
                 <button type="button"  class="bg-green-500 text-white rounded px-4 py-2">Search</button>
             </div>
