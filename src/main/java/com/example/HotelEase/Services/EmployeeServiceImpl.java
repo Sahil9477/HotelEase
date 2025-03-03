@@ -7,6 +7,7 @@ import com.example.HotelEase.Entities.Employee;
 import com.example.HotelEase.Repositories.EmployeeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -32,5 +33,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteEmployee(Integer id) {
         employeeRepository.deleteById(id);
+    }
+    @Override
+    public Employee updateEmployee(Integer id, Employee updatedEmployee) {
+        Optional<Employee> existingEmployee = employeeRepository.findById(id);
+        
+        if (existingEmployee.isPresent()) {
+            Employee employee = existingEmployee.get();
+            employee.setEmployeeName(updatedEmployee.getEmployeeName());
+            employee.setEmployeePosition(updatedEmployee.getEmployeePosition());
+            employee.setEmployeeDepartment(updatedEmployee.getEmployeeDepartment());
+            return employeeRepository.save(employee); // Save updated employee
+        }
+        
+        return null; // Handle case where employee ID does not exist
+    }
+    @Override
+    public List<Employee> searchEmployees(Integer id, String name, String position, String department) {
+        return employeeRepository.searchEmployees(id, name, position, department);
     }
 }

@@ -9,5 +9,9 @@ public interface EmployeeService {
     Employee getEmployeeById(Integer id);
     Employee addEmployee(Employee employee);
     void deleteEmployee(Integer id);
+    Employee updateEmployee(Integer id, Employee updatedEmployee);
+    // New method for dynamic search
+    List<Employee> searchEmployees(Integer id, String name, String position, String department);
+
 }
 

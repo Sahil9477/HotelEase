@@ -9,5 +9,7 @@ public interface RoomService {
     Room getRoomByNumber(Integer roomNumber);
     Room addRoom(Room room);
     void deleteRoom(Integer roomNumber);
+    boolean isRoomAvailable(Integer roomNumber);
+    Room updateRoomAvailability(Integer roomNumber, boolean availability);
 }
 

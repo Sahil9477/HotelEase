@@ -34,4 +34,18 @@ public class EmployeeController {
     public void deleteEmployee(@PathVariable Integer id) {
         employeeService.deleteEmployee(id);
     }
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
+        return employeeService.updateEmployee(id, employee);
+    }
+    
+    @GetMapping("/search")
+    public List<Employee> searchEmployees(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String position,
+            @RequestParam(required = false) String department) {
+        return employeeService.searchEmployees(id, name, position, department);
+    }
+
 }

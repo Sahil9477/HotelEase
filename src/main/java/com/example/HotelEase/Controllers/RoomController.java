@@ -34,4 +34,13 @@ public class RoomController {
     public void deleteRoom(@PathVariable Integer roomNumber) {
         roomService.deleteRoom(roomNumber);
     }
+    @PutMapping("/{roomNumber}/availability/{status}")
+    public Room updateRoomAvailability(@PathVariable Integer roomNumber, @PathVariable boolean status) {
+        return roomService.updateRoomAvailability(roomNumber, status);
+    }
+    @GetMapping("/{roomNumber}/availability")
+    public boolean checkRoomAvailability(@PathVariable Integer roomNumber) {
+        return roomService.isRoomAvailable(roomNumber);
+    }
+
 }
