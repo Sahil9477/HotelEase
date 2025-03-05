@@ -1,14 +1,11 @@
-// load staff list
+//load staff list
 function loadStaffList() {
     fetch('http://localhost:8080/employees')
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             console.log('Employee data received:', data);
             const staffList = document.getElementById('staffList');
-            staffList.innerHTML = '';
+            staffList.innerHTML = ''; //clean old data
             data.forEach(employee => {
                 staffList.innerHTML += `
                     <tr>
@@ -27,142 +24,112 @@ function loadStaffList() {
         .catch(error => console.error('Error fetching employee list:', error));
 }
 
-// add employee
+//add staff
 function addEmployee() {
-    const name = document.getElementById('EmployeeName').value;
-    const position = document.getElementById('EmployeePosition').value;
-    const department = document.getElementById('EmployeeDepartment').value;
+    const id = document.getElementById('EmployeeID').value.trim();
+    const name = document.getElementById('EmployeeName').value.trim();
+    const position = document.getElementById('EmployeePosition').value.trim();
+    const department = document.getElementById('EmployeeDepartment').value.trim();
 
+    if (!name || !position || !department) {
+        alert('Please fill in the complete information.');
+        return;
+    }
+
+    //If the id exists, update it
+    if (id) {
+        updateEmployee(id, name, position, department);
+        return;
+    }
+
+    //Otherwise, perform the new operation
     fetch('http://localhost:8080/employees', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             employeeName: name,
             employeePosition: position,
             employeeDepartment: department
         })
-    }).then(response => {
+    })
+    .then(response => {
         if (response.ok) {
-            alert('add success');
+            alert('Successfully Added');
             loadStaffList();
-            // Clear the form
-            document.getElementById('EmployeeName').value = '';
-            document.getElementById('EmployeePosition').selectedIndex = 0;
-            document.getElementById('EmployeeDepartment').selectedIndex = 0;
+            clearForm(); //clean form
         } else {
-            alert('add failed');
+            alert('Add Failed');
         }
-    }).catch(error => console.error('Error adding employee:', error));
+    })
+    .catch(error => console.error('Error adding employee:', error));
 }
 
-console.log("staffManage.js loaded successfully");
-
-// delete staff
+//delete staff
 function deleteEmployee(id) {
-    if (confirm('Are you sure to delete this employee?')) {
-        fetch(`http://localhost:8080/employees/${id}`, {
-            method: 'DELETE'
-        }).then(response => {
-            if (response.ok) {
-                alert('delete success');
-                loadStaffList();
-            } else {
-                alert('delete failed');
-            }
-        });
-    }
+    if (!confirm('Are you sure you want to delete employees?')) return;
+
+    fetch(`http://localhost:8080/employees/${id}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Deleted Successfully');
+            loadStaffList();
+        } else {
+            alert('Delete Failed');
+        }
+    })
+    .catch(error => console.error('Error deleting employee:', error));
 }
 
-// edit employee
+//edit staff
 function editEmployee(id) {
     fetch(`http://localhost:8080/employees/${id}`)
         .then(response => response.json())
         .then(employee => {
+            console.log("Editing employee:", employee);  // Debug log
+
             document.getElementById('EmployeeID').value = employee.employeeID;
             document.getElementById('EmployeeName').value = employee.employeeName;
             document.getElementById('EmployeePosition').value = employee.employeePosition;
             document.getElementById('EmployeeDepartment').value = employee.employeeDepartment;
-        });
+        })
+        .catch(error => console.error('Error fetching employee details:', error));
 }
 
-// update employee
-function updateEmployee() {
-    const id = document.getElementById('EmployeeID').value;
-    const name = document.getElementById('EmployeeName').value;
-    const position = document.getElementById('EmployeePosition').value;
-    const department = document.getElementById('EmployeeDepartment').value;
-
+//update staff
+function updateEmployee(id, name, position, department) {
     fetch(`http://localhost:8080/employees/${id}`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+            employeeID: id, //Make sure the key name matches the back end
             employeeName: name,
             employeePosition: position,
             employeeDepartment: department
         })
-    }).then(response => {
+    })
+    .then(response => {
         if (response.ok) {
-            alert('edit success');
+            alert('Update Successful');
             loadStaffList();
+            clearForm(); //clean from
         } else {
-            alert('edit failed');
+            alert('Upade Failed');
         }
-    });
+    })
+    .catch(error => console.error('Error updating employee:', error));
 }
 
-// filter employee list
-function filterStaffList() {
-    console.log("Filtering staff list...");
-
-    const searchKeyword = document.getElementById("searchKeyword").value.trim().toLowerCase();
-    const filterPosition = document.getElementById("filterPosition").value.trim();
-    const filterDepartment = document.getElementById("filterDepartment").value.trim();
-
-    fetch("http://localhost:8080/employees")
-        .then(response => response.json())
-        .then(data => {
-            console.log("Original employee data:", data);
-
-            let filteredEmployees = data.filter(employee => {
-                const matchesName = employee.employeeName.toLowerCase().includes(searchKeyword);
-                const matchesPosition = filterPosition === "" || employee.employeePosition === filterPosition;
-                const matchesDepartment = filterDepartment === "" || employee.employeeDepartment === filterDepartment;
-                
-                return matchesName && matchesPosition && matchesDepartment;
-            });
-
-            console.log("Filtered employees:", filteredEmployees);
-            renderEmployeeList(filteredEmployees);
-        })
-        .catch(error => console.error("Error filtering employee list:", error));
+//clean form
+function clearForm() {
+    document.getElementById('EmployeeID').value = '';
+    document.getElementById('EmployeeName').value = '';
+    document.getElementById('EmployeePosition').selectedIndex = 0;
+    document.getElementById('EmployeeDepartment').selectedIndex = 0;
 }
 
-//Render staff list(For 'filterStaffList()' filtering results)
-function renderEmployeeList(employees) {
-    const staffList = document.getElementById('staffList');
-    staffList.innerHTML = ''; //Clear old data
-
-    employees.forEach(employee => {
-        staffList.innerHTML += `
-            <tr>
-                <td class="px-4 text-center">${employee.employeeID}</td>
-                <td class="px-4 text-center">${employee.employeeName}</td>
-                <td class="px-4 text-center">${employee.employeePosition}</td>
-                <td class="px-4 text-center">${employee.employeeDepartment}</td>
-                <td class="px-4 text-center">
-                    <button onclick="editEmployee(${employee.employeeID})" class="bg-green-500 text-white rounded px-2 py-1">Edit</button>
-                    <button onclick="deleteEmployee(${employee.employeeID})" class="bg-red-500 text-white rounded px-2 py-1">Delete</button>
-                </td>
-            </tr>
-        `;
-    });
-}
-
-
+//Gets the employee list when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     loadStaffList();
 });
