@@ -13,6 +13,7 @@ function loadStaffList() {
                         <td class="px-4 text-center">${employee.employeeName}</td>
                         <td class="px-4 text-center">${employee.employeePosition}</td>
                         <td class="px-4 text-center">${employee.employeeDepartment}</td>
+                        <td class="px-4 text-center">${employee.salary}</td>
                         <td class="px-4 text-center">
                             <button onclick="editEmployee(${employee.employeeID})" class="bg-green-500 text-white rounded px-2 py-1">Edit</button>
                             <button onclick="deleteEmployee(${employee.employeeID})" class="bg-red-500 text-white rounded px-2 py-1">Delete</button>

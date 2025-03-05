@@ -18,6 +18,7 @@ public class Employee {
     private String employeeName;
     private String employeePosition;
     private String employeeDepartment;
+	private Double salary;
 	public String getEmployeePosition() {
 		return employeePosition;
 	}
@@ -36,4 +37,11 @@ public class Employee {
 	public void setEmployeeDepartment(String employeeDepartment) {
 		this.employeeDepartment = employeeDepartment;
 	}
+	public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
 }
