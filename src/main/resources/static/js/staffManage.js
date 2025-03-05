@@ -130,6 +130,55 @@ function clearForm() {
     document.getElementById('EmployeeDepartment').selectedIndex = 0;
 }
 
+// filter employee list
+function filterStaffList() {
+    console.log("Filtering staff list...");
+
+    const searchKeyword = document.getElementById("searchKeyword").value.trim().toLowerCase();
+    const filterPosition = document.getElementById("filterPosition").value.trim();
+    const filterDepartment = document.getElementById("filterDepartment").value.trim();
+
+    fetch("http://localhost:8080/employees")
+        .then(response => response.json())
+        .then(data => {
+            console.log("Original employee data:", data);
+
+            let filteredEmployees = data.filter(employee => {
+                const matchesName = employee.employeeName.toLowerCase().includes(searchKeyword);
+                const matchesPosition = filterPosition === "" || employee.employeePosition === filterPosition;
+                const matchesDepartment = filterDepartment === "" || employee.employeeDepartment === filterDepartment;
+                
+                return matchesName && matchesPosition && matchesDepartment;
+            });
+
+            console.log("Filtered employees:", filteredEmployees);
+            renderEmployeeList(filteredEmployees);
+        })
+        .catch(error => console.error("Error filtering employee list:", error));
+}
+
+//Render staff list(For 'filterStaffList()' filtering results)
+function renderEmployeeList(employees) {
+    const staffList = document.getElementById('staffList');
+    staffList.innerHTML = ''; //Clear old data
+
+    employees.forEach(employee => {
+        staffList.innerHTML += `
+            <tr>
+                <td class="px-4 text-center">${employee.employeeID}</td>
+                <td class="px-4 text-center">${employee.employeeName}</td>
+                <td class="px-4 text-center">${employee.employeePosition}</td>
+                <td class="px-4 text-center">${employee.employeeDepartment}</td>
+                <td class="px-4 text-center">${employee.salary}</td>
+                <td class="px-4 text-center">
+                    <button onclick="editEmployee(${employee.employeeID})" class="bg-green-500 text-white rounded px-2 py-1">Edit</button>
+                    <button onclick="deleteEmployee(${employee.employeeID})" class="bg-red-500 text-white rounded px-2 py-1">Delete</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
 //Gets the employee list when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     loadStaffList();
