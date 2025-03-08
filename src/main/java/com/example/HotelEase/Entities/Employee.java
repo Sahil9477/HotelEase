@@ -44,4 +44,8 @@ public class Employee {
     public void setSalary(Double salary) {
         this.salary = salary;
     }
+	public Integer getEmployeeID() {
+		// TODO Auto-generated method stub
+		return this.employeeID;
+	}
 }
